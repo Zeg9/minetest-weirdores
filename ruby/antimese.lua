@@ -1,24 +1,26 @@
 
-minetest.register_craftitem("ruby:anticrystal", {
-	description = "Anticrystal",
-	inventory_image = "ruby_anticrystal.png",
+-- ITEMS --
+
+minetest.register_craftitem("ruby:antimese", {
+	description = "Antimese Crystal",
+	inventory_image = "ruby_antimese.png",
 })
 
-minetest.register_node("ruby:anticrystalblock", {
-	description = "Anticrystal Block",
-	tiles = {"ruby_anticrystal_block.png"},
+minetest.register_node("ruby:antimeseblock", {
+	description = "Antimese Block",
+	tiles = {"ruby_antimese_block.png"},
 	is_ground_content = true,
 	groups = {anti=1,level=2},
 	sounds = default.node_sound_stone_defaults(),
 })
 
 
-local APS = 0.25 -- Anticrystal Pickaxe Speed
-local APU = 100 -- Anticrystal Pickaxe Uses
+local APS = 0.25 -- Antimese Pickaxe Speed
+local APU = 100 -- Antimese Pickaxe Uses
 
-minetest.register_tool("ruby:pick_anticrystal", {
-	description = "Anticrystal Pickaxe",
-	inventory_image = "ruby_tool_anticrystalpick.png",
+minetest.register_tool("ruby:pick_antimese", {
+	description = "Antimese Pickaxe",
+	inventory_image = "ruby_tool_antimesepick.png",
 	tool_capabilities = {
 		full_punch_interval = 0.7,
 		max_drop_level=3,
@@ -33,25 +35,29 @@ minetest.register_tool("ruby:pick_anticrystal", {
 	},
 })
 
+-- CRAFTING --
+
 minetest.register_craft({
-	output = 'ruby:pick_anticrystal',
+	output = 'ruby:pick_antimese',
 	recipe = {
-		{'ruby:anticrystal', 'ruby:anticrystal', 'ruby:anticrystal'},
+		{'ruby:antimese', 'ruby:antimese', 'ruby:antimese'},
 		{'', 'default:stick', ''},
 		{'', 'default:stick', ''},
 	}
 })
 
 minetest.register_craft({
-	output = 'ruby:anticrystalblock',
+	output = 'ruby:antimeseblock',
 	recipe = {
-		{'ruby:anticrystal', 'ruby:anticrystal', 'ruby:anticrystal'},
-		{'ruby:anticrystal', 'ruby:anticrystal', 'ruby:anticrystal'},
-		{'ruby:anticrystal', 'ruby:anticrystal', 'ruby:anticrystal'},
+		{'ruby:antimese', 'ruby:antimese', 'ruby:antimese'},
+		{'ruby:antimese', 'ruby:antimese', 'ruby:antimese'},
+		{'ruby:antimese', 'ruby:antimese', 'ruby:antimese'},
 	}
 })
 
--- Ruby block + Mese block --> Anticrystal
+-- ABM --
+
+-- Ruby block + Mese block --> Antimese
 minetest.register_abm({
 	nodenames={"default:mese"},
 	neighbors={"ruby:rubyblock"},
@@ -78,7 +84,7 @@ minetest.register_abm({
 				for z = pos.z-r, pos.z+r, 1 do
 					local cpos = {x=x,y=y,z=z}
 					if minetest.env:get_node(cpos).name == "ruby:rubyblock" then
-						local e = minetest.env:add_item(cpos,{name="ruby:anticrystal"})
+						local e = minetest.env:add_item(cpos,{name="ruby:antimese"})
 						e:setvelocity({x=0,y=10,z=0})
 					end
 					-- The commented part allows to randomly destroy nodes around
@@ -92,3 +98,10 @@ minetest.register_abm({
 		end
 	end,
 })
+
+-- ALIASES --
+-- This is for compatibility with older versions of the mod, where antimese was anticrystal
+minetest.register_alias("ruby:anticrystal","ruby:antimese")
+minetest.register_alias("ruby:anticrystalblock","ruby:antimeseblock")
+minetest.register_alias("ruby:pick_anticrystal", "ruby:pick_antimese")
+

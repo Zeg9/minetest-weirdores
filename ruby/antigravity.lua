@@ -1,10 +1,6 @@
 
 local antigravities = {}
 
-local same_pos = function(p1,p2)
-	return p1.x == p2.x and p1.y == p2.y and p1.z == p2.z
-end
-
 local is_antigravity = function(pos)
 	for _, i in ipairs(antigravities) do
 		if  i.x == pos.x
@@ -23,6 +19,15 @@ minetest.register_node("ruby:antigravity",{
 	groups = {anti=1,level=2},
 	sounds = default.node_sound_stone_defaults(),
 	on_construct = function(pos)
+		-- Registers antigravity in abm, so no need to do it here
+	end,
+	on_destruct = function(pos)
+		for i, a in ipairs(antigravities) do
+			if a.x == pos.x and a.y == pos.y and a.z == pos.z then
+				print("Removing..."..i)
+				table.remove(antigravities,i)
+			end
+		end
 	end,
 })
 
@@ -55,15 +60,15 @@ minetest.register_abm({
 		maxpos.x = pos.x + .5
 		maxpos.y = pos.y
 		maxpos.z = pos.z + .5
-		minetest.add_particlespawner(100,5,
+		minetest.add_particlespawner(100,10,
 			minpos, maxpos,
 			{x=0,y=20,z=0}, {x=0,y=20,z=0},
 			{x=0,y=0,z=0}, {x=0,y=0,z=0},
-			1, 1,
+			10, 10,
 			.1, 1,
 			false, "ruby_particle_mese.png")
 			
-		if not is_antigravity(pos) then
+		if not is_antigravity({x=pos.x, y=pos.y+1, z=pos.z}) then
 			table.insert(antigravities,pos)
 		end
 	end,
@@ -73,7 +78,7 @@ minetest.register_craft({
 	output = 'ruby:antigravity',
 	recipe = {
 		{'default:mese_crystal','default:mese_crystal','default:mese_crystal'},
-		{'default:mese_crystal','ruby:anticrystalblock','default:mese_crystal'},
+		{'default:mese_crystal','ruby:antimeseblock','default:mese_crystal'},
 		{'default:mese_crystal','default:mese_crystal','default:mese_crystal'},
 	}
 })

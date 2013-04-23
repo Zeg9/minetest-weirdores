@@ -3,7 +3,7 @@
 -- Remove the modules you do not want to load
 local MODULES = {
 	"ruby",
-	"anticrystal",
+	"antimese",
 	"antigravity",
 }
 
