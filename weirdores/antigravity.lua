@@ -12,9 +12,9 @@ local is_antigravity = function(pos)
 	return false
 end
 
-minetest.register_node("ruby:antigravity",{
+minetest.register_node("weirdores:antigravity",{
 	description = "Antigravity",
-	tiles = {"ruby_antigravity.png"},
+	tiles = {"weirdores_antigravity.png"},
 	is_ground_content = true,
 	groups = {anti=1,level=2},
 	sounds = default.node_sound_stone_defaults(),
@@ -24,7 +24,6 @@ minetest.register_node("ruby:antigravity",{
 	on_destruct = function(pos)
 		for i, a in ipairs(antigravities) do
 			if a.x == pos.x and a.y == pos.y and a.z == pos.z then
-				print("Removing..."..i)
 				table.remove(antigravities,i)
 			end
 		end
@@ -48,7 +47,7 @@ minetest.register_globalstep(function(dtime)
 end)
 
 minetest.register_abm({
-	nodenames={"ruby:antigravity"},
+	nodenames={"weirdores:antigravity"},
 	interval = 5,
 	chance = 1,
 	action = function(pos, node)
@@ -66,7 +65,7 @@ minetest.register_abm({
 			{x=0,y=0,z=0}, {x=0,y=0,z=0},
 			10, 10,
 			.1, 1,
-			false, "ruby_particle_mese.png")
+			false, "weirdores_particle_mese.png")
 			
 		if not is_antigravity({x=pos.x, y=pos.y+1, z=pos.z}) then
 			table.insert(antigravities,pos)
@@ -75,11 +74,13 @@ minetest.register_abm({
 })
 
 minetest.register_craft({
-	output = 'ruby:antigravity',
+	output = 'weirdores:antigravity',
 	recipe = {
 		{'default:mese_crystal','default:mese_crystal','default:mese_crystal'},
-		{'default:mese_crystal','ruby:antimeseblock','default:mese_crystal'},
+		{'default:mese_crystal','weirdores:antimeseblock','default:mese_crystal'},
 		{'default:mese_crystal','default:mese_crystal','default:mese_crystal'},
 	}
 })
+
+minetest.register_alias("ruby:antigravity","weirdores:antigravity")
 
